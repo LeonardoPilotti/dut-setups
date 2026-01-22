@@ -1,20 +1,19 @@
-
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="h-full">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? 'DUT Setups' }}</title>
-
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="min-h-screen">
-
-    <x-header />
-    <!-- Conteúdo da página -->
-    <main class="max-w-5xl mx-auto px-4 py-8">
-        {{ $slot }}
-    </main>
-
+<body class="h-full ">
+    <div class="h-full flex flex-col">
+        <x-header />
+        <!-- Conteúdo da página -->
+        <main class="flex-1 overflow-hidden">
+            {{ $slot }}
+        </main>
+    </div>
 </body>
 </html>
