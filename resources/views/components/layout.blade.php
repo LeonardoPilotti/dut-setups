@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -7,11 +8,11 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-zinc-100 text-zinc-900 min-h-screen">
-
-
+<body class="min-h-screen">
 
     <x-header />
+    <!-- Conteúdo da página -->
+    <main class="max-w-5xl mx-auto px-4 py-8">
         {{ $slot }}
     </main>
 
