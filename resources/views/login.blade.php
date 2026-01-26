@@ -63,7 +63,7 @@
                             class="mt-2 bg-[var(--primary)] hover:bg-[var(--primary-hover)]
                                    text-white p-3 rounded-lg font-bold
                                    transition-all duration-200
-                                   shadow-lg shadow-[var(--primary)]/30">
+                                   shadow-lg shadow-[var(--primary)]/30 cursor-pointer">
                             Entrar
                         </button>
 
