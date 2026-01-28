@@ -1,39 +1,39 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
+
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         return view('login');
     }
 
     public function authenticate(LoginRequest $request)
     {
-       $credentials = $request->only('email','password');
+        $credentials = $request->only('email', 'password');
 
-        if(Auth::attempt($credentials)){
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+
             return redirect()->intended(route('site.dashboard'));
         }
+
         return back()->withErrors([
-            'email'=> 'Credenciais inválidas'
+            'email' => 'Credenciais inválidas',
         ]);
     }
 
-
-    public function logout (Request $request):RedirectResponse
+    public function logout()
     {
         Auth::logout();
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect(route('site.dashboard'));
-
+        return redirect()->route('site.home');
     }
 }
