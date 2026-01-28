@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="h-full">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">  
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,10 +8,11 @@
     <link rel="preload" as="image" href="/images/fundo.png">
 </head>
 
-<body class="h-full ">
-    <div class="h-full flex flex-col">
+<body class="min-h-screen bg-[#1F2233]">
+    <div class="min-h-screen flex flex-col">
         <x-header />
-        <main class="flex-1 overflow-auto">
+
+        <main class="flex-1">
             {{ $slot }}
         </main>
     </div>

@@ -12,7 +12,7 @@
                     </p>
 
                     <form action="{{ route('auth.register') }}" method="POST" class="flex flex-col gap-5">
-                        @csrf
+                        @csrf   
 
                         <!-- Nome -->
                         <div>
