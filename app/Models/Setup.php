@@ -10,8 +10,9 @@ class Setup extends Model
     use HasFactory;
 
     protected $fillable = [
+        'title',   
+        'owner_name',    
         'user_id',
-        'owner_name',
         'track_id',
         'is_wet',
         'front_wing',
@@ -36,19 +37,19 @@ class Setup extends Model
         'rear_left_pressure',
     ];
 
-    // Apenas UMA relação com usuário (escolha uma)
+    // Relação com o usuário
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    // Se quiser usar 'owner' como alias
+    // Relação com o criador do setup
     public function owner()
     {
         return $this->belongsTo(User::class, 'owner_id');
     }
 
-       public function track()
+    public function track()
     {
         return $this->belongsTo(Track::class);
     }
