@@ -58,4 +58,7 @@ Route::middleware('auth')->group(function () {
 
     Route::put('/dashboard/setup/{setup}', [SetupController::class, 'update'])
         ->name('setups.update');
+
+    Route::delete('/dashboard/setup/{setup}', [SetupController::class, 'destroy'])
+    ->name('setups.destroy');
 });

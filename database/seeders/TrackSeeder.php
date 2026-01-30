@@ -26,6 +26,7 @@ class TrackSeeder extends Seeder
             ['name' => 'Hungria', 'country' => 'hu', 'slug' => 'hungria'],
             ['name' => 'Holanda', 'country' => 'nl', 'slug' => 'holanda'],
             ['name' => 'Monza', 'country' => 'it', 'slug' => 'monza'],
+            ['name' => 'Azerbaijão', 'country' => 'az', 'slug' => 'azerbaijao'],
             ['name' => 'Singapura', 'country' => 'sg', 'slug' => 'singapura'],
             ['name' => 'Austin', 'country' => 'us', 'slug' => 'austin'],
             ['name' => 'México', 'country' => 'mx', 'slug' => 'mexico'],

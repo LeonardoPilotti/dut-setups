@@ -103,4 +103,17 @@ class SetupController extends Controller
             ->route('dashboard.track', $setup->track->slug)
             ->with('success', 'Setup atualizado com sucesso!');
     }
+
+    public function destroy(Request $request, Setup $setup)
+    {
+        if (! auth()->user()->isAdmin() && auth()->user()->role !== 'team') {
+            abort(403);
+        }
+
+        $setup->delete();
+
+        return redirect()
+            ->route('dashboard.track', $setup->track->slug)
+            ->with('success', 'Setup deletado com sucesso!');
+    }
 }
