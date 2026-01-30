@@ -19,7 +19,7 @@
             </a>
 
             @guest
-                <a href="{{ route('site.login') }}" class="font-bold transition hover:text-[var(--primary-hover)]">
+                <a href="{{ route('login') }}" class="font-bold transition hover:text-[var(--primary-hover)]">
                     Login
                 </a>
             @endguest

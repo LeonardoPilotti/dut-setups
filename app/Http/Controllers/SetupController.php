@@ -26,6 +26,8 @@ class SetupController extends Controller
     // Salvar o setup no banco
     public function store(Request $request, Track $track)
     {
+        $this->authorizeAdmin();
+
         $data = $request->validate([
             'title' => 'required|string|max:255',
             'owner_name' => 'required|string|max:255',
@@ -62,18 +64,23 @@ class SetupController extends Controller
             ->with('success', 'Setup criado com sucesso!');
     }
 
-    public function show(\App\Models\Track $track, \App\Models\Setup $setup)
+    public function show(Track $track, Setup $setup)
     {
+        $user = auth()->user();
+
+        if (! $setup->is_generic) {
+            if (! $user || (! $user->isAdmin() && ! $user->isTeamMember())) {
+                abort(403);
+            }
+        }
+
         return view('dashboard.setup.show', compact('track', 'setup'));
     }
 
     // Exibir formulário de edição
     public function edit(Setup $setup)
     {
-        // Impede acesso se não for admin ou team
-        if (! auth()->user()->isAdmin() && auth()->user()->role !== 'team') {
-            abort(403);
-        }
+        $this->authorizeAdmin();
         $track = $setup->track; // relacionamento
 
         return view('dashboard.setup.edit', compact('setup', 'track'));
@@ -82,9 +89,7 @@ class SetupController extends Controller
     // Salvar edição do setup
     public function update(Request $request, Setup $setup)
     {
-        if (! auth()->user()->isAdmin() && auth()->user()->role !== 'team') {
-            abort(403);
-        }
+        $this->authorizeAdmin();
 
         $data = $request->validate([
             'title' => 'required|string|max:255',
@@ -104,11 +109,9 @@ class SetupController extends Controller
             ->with('success', 'Setup atualizado com sucesso!');
     }
 
-    public function destroy(Request $request, Setup $setup)
+    public function destroy(Setup $setup)
     {
-        if (! auth()->user()->isAdmin() && auth()->user()->role !== 'team') {
-            abort(403);
-        }
+        $this->authorizeAdmin();
 
         $setup->delete();
 

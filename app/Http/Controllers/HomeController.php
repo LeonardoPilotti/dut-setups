@@ -6,9 +6,14 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function index()
-    {
-        return view('home');
+   public function index()
+{
+    if (auth()->check()) {
+        return redirect()->route('site.dashboard');
     }
+
+    return view('home');
+}
+
 
 }

@@ -107,7 +107,7 @@
 
                         <p class="text-center text-sm text-[var(--text-muted)] mt-4">
                             Já possui uma conta?
-                            <a href="{{ route('site.login') }}"
+                            <a href="{{ route('login') }}"
                                class="font-bold text-[var(--primary)] hover:text-[var(--primary-hover)] transition">
                                 Faça login
                             </a>

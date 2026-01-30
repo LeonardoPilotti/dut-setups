@@ -13,7 +13,7 @@ Route::get('/', [HomeController::class, 'index'])
 
 // Auth 
 Route::get('/login', [LoginController::class, 'index'])
-    ->name('site.login');
+    ->name('login');
 
 Route::post('/login', [LoginController::class, 'authenticate'])
     ->name('auth.login');
