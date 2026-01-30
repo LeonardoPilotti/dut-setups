@@ -18,7 +18,7 @@ return new class extends Migration
             $table->boolean('is_wet')->default(false); // false = seco | true = chuva
 
             // Visibilidade
-            $table->boolean('is_public')->default(false);
+            $table->boolean('is_generic')->default(false);
 
             $table->string('title');
 

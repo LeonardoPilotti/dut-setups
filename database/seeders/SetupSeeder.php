@@ -22,7 +22,7 @@ class SetupSeeder extends Seeder
                 'owner_name' => 'Gabriel Quintino',
                 'track_id' => $track->id,
                 'is_wet' => false,
-                'is_public' => true,
+                'is_generic' => true,
                 'title' => 'Setup seco - ' . $track->name,
 
                 'front_wing' => 28.0,
@@ -58,7 +58,7 @@ class SetupSeeder extends Seeder
                 'owner_name' => 'Gabriel Chuvisco',
                 'track_id' => $track->id,
                 'is_wet' => true,
-                'is_public' => true,
+                'is_generic' => true,
                 'title' => 'Setup chuva - ' . $track->name,
 
                 'front_wing' => 35.0,

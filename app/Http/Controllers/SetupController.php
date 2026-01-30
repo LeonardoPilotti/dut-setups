@@ -1,15 +1,26 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Setup;
 use App\Models\Track;
+use Illuminate\Http\Request;
 
 class SetupController extends Controller
 {
     // Exibir o formulário
     public function create(Track $track)
     {
+        $this->authorizeAdmin();
+
         return view('dashboard.setup.create', compact('track'));
+    }
+
+    private function authorizeAdmin()
+    {
+        if (! auth()->check() || ! auth()->user()->isAdmin()) {
+            abort(403, 'Acesso negado!');
+        }
     }
 
     // Salvar o setup no banco
@@ -17,7 +28,8 @@ class SetupController extends Controller
     {
         $data = $request->validate([
             'title' => 'required|string|max:255',
-            'owner' => 'required|string|max:255',
+            'owner_name' => 'required|string|max:255',
+            'is_generic' => 'required|boolean',
             'is_wet' => 'required|boolean',
             'front_wing' => 'nullable|numeric|min:0|max:50',
             'rear_wing' => 'nullable|numeric|min:0|max:50',
@@ -47,6 +59,48 @@ class SetupController extends Controller
         $setup = \App\Models\Setup::create($data);
 
         return redirect()->route('dashboard.track', $track->slug)
-                         ->with('success', 'Setup criado com sucesso!');
+            ->with('success', 'Setup criado com sucesso!');
+    }
+
+    public function show(\App\Models\Track $track, \App\Models\Setup $setup)
+    {
+        return view('dashboard.setup.show', compact('track', 'setup'));
+    }
+
+    // Exibir formulário de edição
+    public function edit(Setup $setup)
+    {
+        // Impede acesso se não for admin ou team
+        if (! auth()->user()->isAdmin() && auth()->user()->role !== 'team') {
+            abort(403);
+        }
+        $track = $setup->track; // relacionamento
+
+        return view('dashboard.setup.edit', compact('setup', 'track'));
+    }
+
+    // Salvar edição do setup
+    public function update(Request $request, Setup $setup)
+    {
+        if (! auth()->user()->isAdmin() && auth()->user()->role !== 'team') {
+            abort(403);
+        }
+
+        $data = $request->validate([
+            'title' => 'required|string|max:255',
+            'owner_name' => 'nullable|string|max:255',
+            'is_generic' => 'boolean',
+
+            'front_wing' => 'nullable|integer',
+            'rear_wing' => 'nullable|integer',
+            'diff_on' => 'nullable|integer',
+            'diff_off' => 'nullable|integer',
+        ]);
+
+        $setup->update($data);
+
+        return redirect()
+            ->route('dashboard.track', $setup->track->slug)
+            ->with('success', 'Setup atualizado com sucesso!');
     }
 }

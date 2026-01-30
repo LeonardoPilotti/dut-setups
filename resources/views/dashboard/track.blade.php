@@ -3,10 +3,10 @@
         <!-- Imagem de fundo -->
         <img src="https://simracingsetup.com/wp-content/uploads/2024/04/F1-24-Bahrain-Car-Setups-Full.webp"
             class="absolute inset-0 w-full h-full object-cover">
-        
+
         <!-- Overlay sobre toda a imagem -->
         <div class="absolute inset-0 bg-black/60"></div>
-        
+
         <div class="relative px-6 max-w-3xl">
             <h1 class="text-4xl font-bold mb-4">
                 F1 25 - Setups {{ $track->name }}
@@ -16,10 +16,15 @@
                 <br>
                 Filtre por condições climáticas e maximize seu desempenho na pista.
             </p>
-            <a href="{{ route('setup.create', $track->slug) }}"
-                class="inline-flex items-center bg-[#5B21B6] hover:bg-[#4C1D95] text-white font-bold py-3 px-6 mt-4 rounded-lg transition-all">
-                Adicionar Setup
-            </a>
+            @auth
+                @if (auth()->user()->isAdmin())
+                    <a href="{{ route('setup.create', $track->slug) }}"
+                        class="inline-flex items-center bg-[#5B21B6] hover:bg-[#4C1D95] text-white font-bold py-3 px-6 mt-4 rounded-lg transition-all">
+                        Adicionar Setup
+                    </a>
+                @endif
+            @endauth
+
         </div>
     </section>
 
@@ -32,7 +37,7 @@
             <!-- Botões -->
             <div class="flex gap-4 mb-8">
                 <a href="?filter=dry"
-                    class="inline-block {{ $filter == 'dry' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-700 hover:bg-gray-600' }} text-white px-6 py-3 rounded-lg font-semibold transition">
+                    class="inline-block {{ $filter == 'dry' ? 'bg-amber-600 hover:bg-amber-700' : 'bg-gray-700 hover:bg-gray-600' }} text-white px-6 py-3 rounded-lg font-semibold transition">
                     Pista Seca
                 </a>
                 <a href="?filter=wet"
@@ -42,7 +47,7 @@
             </div>
 
             <!-- Setups secos-->
-          @if ($drySetups->isNotEmpty() && $filter == 'dry')
+            @if ($drySetups->isNotEmpty() && $filter == 'dry')
                 <div class="mb-12">
                     <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-2">
                         <span class="w-3 h-6 bg-amber-500 rounded"></span>
@@ -50,7 +55,7 @@
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         @foreach ($drySetups as $setup)
-                            <a href="{{ route('setup.show', [$track->slug, $setup->id]) }}"
+                            <a href="{{ route('dashboard.setup.show', [$track->slug, $setup->id]) }}"
                                 class="block bg-[#171825] rounded-xl p-6 hover:bg-[#21242f] transition-all shadow-lg hover:shadow-xl border border-gray-800 hover:border-gray-700">
 
                                 <!-- Cabeçalho -->
@@ -58,7 +63,8 @@
                                     <h4 class="text-xl font-bold text-white">
                                         {{ $setup->title }}
                                     </h4>
-                                    <span class="bg-amber-900 text-amber-200 text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
+                                    <span
+                                        class="bg-amber-900 text-amber-200 text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
                                         SECO
                                     </span>
                                 </div>
@@ -94,7 +100,7 @@
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         @foreach ($wetSetups as $setup)
-                            <a href="{{ route('setup.show', [$track->slug, $setup->id]) }}"
+                            <a href="{{ route('dashboard.setup.show', [$track->slug, $setup->id]) }}"
                                 class="block bg-[#171825] rounded-xl p-6 hover:bg-[#21242f] transition-all shadow-lg hover:shadow-xl border border-gray-800 hover:border-gray-700">
 
                                 <!-- Cabeçalho -->
@@ -102,7 +108,8 @@
                                     <h4 class="text-xl font-bold text-white">
                                         {{ $setup->title }}
                                     </h4>
-                                    <span class="bg-blue-900 text-blue-200 text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
+                                    <span
+                                        class="bg-blue-900 text-blue-200 text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
                                         CHUVA
                                     </span>
                                 </div>
@@ -126,6 +133,7 @@
                                 </div>
                             </a>
                         @endforeach
+                        
                     </div>
                 </div>
             @endif

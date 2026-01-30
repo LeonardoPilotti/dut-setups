@@ -3,18 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model; 
 
 class Setup extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'title',   
-        'owner_name',    
+        'title',
+        'owner_name', 
         'user_id',
         'track_id',
         'is_wet',
+        'is_generic',
         'front_wing',
         'rear_wing',
         'diff_on',
@@ -37,18 +38,13 @@ class Setup extends Model
         'rear_left_pressure',
     ];
 
-    // Relação com o usuário
+    // Relação com o usuário que postou
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    // Relação com o criador do setup
-    public function owner()
-    {
-        return $this->belongsTo(User::class, 'owner_id');
-    }
-
+    // Relação com a pista
     public function track()
     {
         return $this->belongsTo(Track::class);
