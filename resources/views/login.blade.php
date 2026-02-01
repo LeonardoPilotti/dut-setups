@@ -19,10 +19,7 @@
                             <label class="block text-sm font-medium text-[var(--text-main)] mb-1">
                                 Email
                             </label>
-                            <input
-                                type="email"
-                                name="email"
-                                value="{{ old('email') }}"
+                            <input type="email" name="email" value="{{ old('email') }}"
                                 placeholder="your@email.com"
                                 class="w-full bg-[var(--bg-input)] text-[var(--text-main)]
                                        placeholder-[var(--text-placeholder)]
@@ -36,15 +33,18 @@
                             @enderror
                         </div>
 
-                        <!-- Senha -->
+                        <!-- Senha + Esqueci senha na mesma linha -->
                         <div>
-                            <label class="block text-sm font-medium text-[var(--text-main)] mb-1">
-                                Senha
-                            </label>
-                            <input
-                                type="password"
-                                name="password"
-                                placeholder="••••••••"
+                            <div class="flex items-center justify-between mb-1">
+                                <label class="block text-sm font-medium text-[var(--text-main)]">
+                                    Senha
+                                </label>
+                                <a href="{{ route('password.request') }}"
+                                    class="text-xs text-[var(--primary)] hover:text-[var(--primary-hover)] transition">
+                                    Esqueceu sua senha?
+                                </a>
+                            </div>
+                            <input type="password" name="password" placeholder="••••••••"
                                 class="w-full bg-[var(--bg-input)] text-[var(--text-main)]
                                        placeholder-[var(--text-placeholder)]
                                        border border-transparent rounded-lg p-3
@@ -57,20 +57,20 @@
                             @enderror
                         </div>
 
-                        <!-- Botão -->
-                        <button
-                            type="submit"
-                            class="mt-2 bg-[var(--primary)] hover:bg-[var(--primary-hover)]
+                        <!-- Botão Entrar -->
+                        <button type="submit"
+                            class="w-full bg-[var(--primary)] hover:bg-[var(--primary-hover)]
                                    text-white p-3 rounded-lg font-bold
-                                   transition-all duration-200
+                                   transition-all duration-200 mt-2
                                    shadow-lg shadow-[var(--primary)]/30 cursor-pointer">
                             Entrar
                         </button>
 
-                        <p class="text-center text-sm text-[var(--text-muted)] mt-4">
+                        <!-- Registro -->
+                        <p class="text-center text-sm text-[var(--text-muted)]">
                             Ainda não tem uma conta?
                             <a href="{{ route('site.register') }}"
-                               class="font-bold text-[var(--primary)] hover:text-[var(--primary-hover)] transition">
+                                class="font-bold text-[var(--primary)] hover:text-[var(--primary-hover)] transition">
                                 Registre-se
                             </a>
                         </p>
@@ -79,4 +79,5 @@
             </div>
         </main>
     </div>
+    <x-footer />
 </x-layout>

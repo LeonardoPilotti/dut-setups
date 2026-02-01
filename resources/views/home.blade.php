@@ -15,12 +15,12 @@
 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     <a href="/login"
-                        class="px-8 py-4 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-red-500/20">
+                        class="px-8 py-4 bg-red-700 hover:red-800 text-white font-bold rounded-xl transition-all duration-300 transform hover:scale-105">
                         Entrar na Conta
                     </a>
 
                     <a href="#features"
-                        class="px-8 py-4 bg-gradient-to-r from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800 text-white font-bold rounded-xl border border-gray-700 hover:border-gray-600 transition-all duration-300 transform hover:scale-105">
+                        class="px-8 py-4 bg-gray-800 hover:gray-700 text-white font-bold rounded-xl border border-gray-700 hover:border-gray-600 transition-all duration-300 transform hover:scale-105">
                         Ver Recursos
                     </a>
                 </div>

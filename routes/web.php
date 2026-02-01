@@ -1,18 +1,21 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SetupController;
 use App\Http\Controllers\TrackController;
-use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use Illuminate\Support\Facades\Mail;
 
 Route::get('/', [HomeController::class, 'index'])
     ->name('site.home');
 
-// Auth 
+// Auth
 Route::get('/login', [LoginController::class, 'index'])
     ->name('login');
 
@@ -27,6 +30,19 @@ Route::post('/cadastro', [RegisterController::class, 'store'])
 
 Route::post('/logout', [LoginController::class, 'logout'])
     ->name('auth.logout');
+
+// Redefinir senha
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])
+    ->name('password.request');
+
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])
+    ->name('password.email');
+
+Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])
+    ->name('password.reset');
+
+Route::post('/reset-password', [ResetPasswordController::class, 'reset'])
+    ->name('password.update');
 
 // Dashboard (somente usuários logados)
 Route::middleware('auth')->group(function () {
@@ -67,4 +83,13 @@ Route::middleware('auth')->group(function () {
             ->name('admin.dashboard');
 
     });
+});
+
+Route::get('/test-mail', function () {
+    Mail::raw('Email funcionando 🎉', function ($message) {
+        $message->to('test@example.com')
+                ->subject('Teste Mailtrap');
+    });
+
+    return 'enviado';
 });
