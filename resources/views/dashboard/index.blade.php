@@ -22,19 +22,19 @@
         </section>
 
         <!-- Lista de Pistas -->
-       <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 pt-12">
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 pt-12">
             <div class="text-center mb-12">
                 <h2 class="text-white text-lg    mx-auto">
                     Encontre o setup ideal para cada circuito e maximize seu desempenho
-            </h2>
+                </h2>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 @forelse ($tracks as $track)
                     <a href="{{ route('dashboard.track', $track->slug) }}"
-                        class="group relative overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-red-900/20 border border-gray-700 hover:border-red-500/50">
+                        class="group relative overflow-hidden bg-gray-900 rounded-2xl p-6 transition-all duration-300 border border-gray-700 hover:border-red-500">
 
-                        <!-- Efeito de brilho no hover -->
+                        <!-- Efeito hover -->
                         <div
                             class="absolute inset-0 bg-gradient-to-r from-transparent via-red-500/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000">
                         </div>
@@ -42,33 +42,25 @@
                         <!-- Bandeira com efeito -->
                         <div class="relative mb-4">
                             <div
-                                class="absolute -inset-1 bg-gradient-to-r from-red-600 to-blue-600 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-500">
+                                class="absolute -inset-1 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-500">
                             </div>
                             <img src="https://flagcdn.com/{{ $track->country }}.svg"
-                                class="relative w-16 h-10 object-cover rounded-lg shadow-lg border border-gray-600 group-hover:border-white/50 transition duration-300"
+                                class="relative w-16 h-10 object-cover rounded-lg  border-gray-600 group-hover:border-white/50 transition duration-300"
                                 alt="{{ $track->name }} flag" loading="lazy">
                         </div>
 
                         <!-- Nome da pista -->
-                        <h3
-                            class="text-xl font-bold text-white mb-2 group-hover:text-red-400 transition-colors duration-300">
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-red-400 duration-300">
                             {{ $track->name }}
                         </h3>
 
-                        <!-- Ícone de seta no hover -->
-                        <div
-                            class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
-                            <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                            </svg>
-                        </div>
-                </a>
-        @empty
-            <div>
-                <h3 class="text-2xl font-bold text-white mb-2">Nenhuma pista encontrada</h3>
-            </div>
-            @endforelse
+
+                    </a>
+                @empty
+                    <div>
+                        <h3 class="text-2xl font-bold text-white mb-2">Nenhuma pista encontrada</h3>
+                    </div>
+                @endforelse
             </div>
         </section>
 

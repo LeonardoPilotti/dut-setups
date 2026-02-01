@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SetupController;
 use App\Http\Controllers\TrackController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])
@@ -28,20 +29,17 @@ Route::post('/logout', [LoginController::class, 'logout'])
     ->name('auth.logout');
 
 // Dashboard (somente usuários logados)
-
 Route::middleware('auth')->group(function () {
 
     // Dashboard principal
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('site.dashboard');
 
-    // Ver pista + setups (filtro por role acontece no controller)
+    // Ver pista + setups
     Route::get('/dashboard/{track:slug}', [TrackController::class, 'show'])
         ->name('dashboard.track');
 
-    // Setups
-
-    // Criar setup (somente admin / team — controle no controller ou middleware)
+    // Criar setup
     Route::get('/dashboard/{track:slug}/setup/create', [SetupController::class, 'create'])
         ->name('setup.create');
 
@@ -60,5 +58,13 @@ Route::middleware('auth')->group(function () {
         ->name('setups.update');
 
     Route::delete('/dashboard/setup/{setup}', [SetupController::class, 'destroy'])
-    ->name('setups.destroy');
+        ->name('setups.destroy');
+
+    // Painel Admins
+    Route::middleware('admin')->group(function () {
+
+        Route::get('/admin', [AdminController::class, 'index'])
+            ->name('admin.dashboard');
+
+    });
 });

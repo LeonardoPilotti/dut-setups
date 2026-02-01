@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -23,13 +22,12 @@ class User extends Authenticatable
         'password',
     ];
 
-    public function isTeamMember()
+    public function isTeamMember(): bool
     {
         return $this->role === 'team';
     }
 
-    
-    public function isAdmin()
+    public function isAdmin(): bool
     {
         return $this->role === 'admin';
     }

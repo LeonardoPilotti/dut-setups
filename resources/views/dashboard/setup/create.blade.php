@@ -9,7 +9,6 @@
             <form action="{{ route('setup.store', $track->slug) }}" method="POST"
                 class="bg-gradient-to-br from-gray-900 to-gray-800 p-8 rounded-3xl space-y-10 shadow-2xl border border-gray-700">
                 @csrf
-                <!-- CAMPOS OCULTOS -->
                 <input type="hidden" name="user_id" value="{{ auth()->id() }}">
 
                 <!-- INFORMAÇÕES DO SETUP -->
@@ -62,13 +61,16 @@
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-300 mb-2">Asa Dianteira</label>
-                                <input name="front_wing" type="number" min="0" max="50" required
+                                <input name="front_wing" type="number" min="0" max="50" step="1"
+                                    required
                                     class="w-full px-4 py-3 rounded-xl bg-gray-900 text-white border border-gray-600 focus:outline-none"
                                     placeholder="0-50">
+
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-300 mb-2">Asa Traseira</label>
-                                <input name="rear_wing" type="number" min="0" max="50" required
+                                <input name="rear_wing" type="number" min="0" max="50" step="1"
+                                    required
                                     class="w-full px-4 py-3 rounded-xl bg-gray-900 text-white border border-gray-600 focus:outline-none"
                                     placeholder="0-50">
                             </div>
@@ -271,8 +273,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- BOTÃO DE ENVIO -->
                 <div class="pt-6">
                     <button type="submit"
                         class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl transition-all">

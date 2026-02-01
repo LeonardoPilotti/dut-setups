@@ -31,6 +31,14 @@
                         Logout
                     </button>
                 </form>
+
+                @if (auth()->user()->isAdmin() && !request()->routeIs('admin.*'))
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 transition">
+                        Painel Admin
+                    </a>
+                @endif  
+
             @endauth
 
         </div>
