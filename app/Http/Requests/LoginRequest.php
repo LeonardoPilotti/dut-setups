@@ -22,7 +22,7 @@ class LoginRequest extends FormRequest
     {
         return [
             'email'=>'required|email',
-            'password'=>'required|min:6|max:60',
+            'password'=>'required|min:8|max:60',
         ];
     }
 
@@ -31,7 +31,7 @@ class LoginRequest extends FormRequest
             'email.required'=>'O campo e-mail é obrigatório.',
             'email.email'=>'O campo e-mail deve ser um espaço válido.',
             'password.required'=>'O campo senha é obrigatório.',
-            'password.min'=>'A senha deve ter no mínimo 6 caracteres.',
+            'password.min'=>'A senha deve ter no mínimo 8 caracteres.',
             'password.max'=>'A senha pode ter no máximo 60 caracteres.'
         ];}
 }

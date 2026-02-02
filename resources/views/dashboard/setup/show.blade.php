@@ -35,7 +35,7 @@
                             </a>
 
                             @if (auth()->user()->isAdmin() || auth()->user()->role === 'team')
-                                <a href="{{ route('setups.edit', $setup->id) }}"
+                                <a href="{{ route('setups.edit', [$track->slug, $setup->id]) }}"
                                     class="flex items-center gap-2 p-3 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition">
 
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -159,13 +159,11 @@
                         <div class="grid grid-cols-2 gap-2">
                             <div class="p-3 bg-gray-900/50 rounded-lg">
                                 <span class="text-gray-400 text-sm">Suspensão Dianteira</span>
-                                <div class="text-white font-semibold mt-1">
-                                    {{ $setup->front_suspension ?? $setup->front_wing }}</div>
+                                <div class="text-white font-semibold mt-1">{{ $setup->front_suspension }}</div>
                             </div>
                             <div class="p-3 bg-gray-900/50 rounded-lg">
                                 <span class="text-gray-400 text-sm">Suspensão Traseira</span>
-                                <div class="text-white font-semibold mt-1">
-                                    {{ $setup->rear_suspension ?? $setup->rear_wing }}</div>
+                                <div class="text-white font-semibold mt-1">{{ $setup->rear_suspension }}</div>
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-2">

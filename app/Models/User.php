@@ -21,6 +21,7 @@ class User extends Authenticatable implements CanResetPasswordContract
         'name',
         'email',
         'password',
+        'role',
     ];
 
     public function isTeamMember(): bool

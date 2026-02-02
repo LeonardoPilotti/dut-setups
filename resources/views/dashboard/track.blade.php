@@ -95,27 +95,33 @@
                                         </div>
                                     </a>
 
-                                    <!-- DELETAR -->
-                                    <form action="{{ route('setups.destroy', $setup->id) }}" method="POST"
-                                        onsubmit="return confirm('Tem certeza que deseja excluir este setup?')"
-                                        class="absolute bottom-4 right-4 z-10">
-                                        @csrf
-                                        @method('DELETE')
+                                    <!-- DELETAR — Só admin -->
+                                    @auth
+                                        @if (auth()->user()->isAdmin())
+                                            <form action="{{ route('setups.destroy', [$track->slug, $setup->id]) }}" method="POST"
+                                                onsubmit="return confirm('Tem certeza que deseja excluir este setup?')"
+                                                class="absolute bottom-4 right-4 z-10">
+                                                @csrf
+                                                @method('DELETE')
 
-                                        <button type="submit" onclick="event.stopPropagation()"
-                                            class="text-red-400 hover:text-red-300 transition" title="Excluir setup">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862
-                                                    a2 2 0 01-1.995-1.858L5 7
-                                                    m5 4v6
-                                                    m4-6v6
-                                                    M9 7h6
-                                                    m2 0H7
-                                                    m3-3h4a1 1 0 011 1v2H9V5a1 1 0 011-1z" />
-                                            </svg>
-                                        </button>
-                                    </form>
+                                                <button type="submit" onclick="event.stopPropagation()"
+                                                    class="text-red-400 hover:text-red-300 transition"
+                                                    title="Excluir setup">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862
+                            a2 2 0 01-1.995-1.858L5 7
+                            m5 4v6
+                            m4-6v6
+                            M9 7h6
+                            m2 0H7
+                            m3-3h4a1 1 0 011 1v2H9V5a1 1 0 011-1z" />
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                        @endif
+                                    @endauth
                                 </div>
                             @endforeach
                         </div>
@@ -164,10 +170,10 @@
                                         </div>
                                     </a>
 
-                                    <!-- DELEAR -->
+                                    <!-- DELETAR — Só admin -->
                                     @auth
                                         @if (auth()->user()->isAdmin())
-                                            <form action="{{ route('setups.destroy', $setup->id) }}" method="POST"
+                                            <form action="{{ route('setups.destroy', [$track->slug, $setup->id]) }}" method="POST"
                                                 onsubmit="return confirm('Tem certeza que deseja excluir este setup?')"
                                                 class="absolute bottom-4 right-4 z-10">
                                                 @csrf
@@ -180,12 +186,12 @@
                                                         viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                             stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862
-                                                            a2 2 0 01-1.995-1.858L5 7
-                                                            m5 4v6
-                                                            m4-6v6
-                                                            M9 7h6
-                                                            m2 0H7
-                                                            m3-3h4a1 1 0 011 1v2H9V5a1 1 0 011-1z" />
+                                                                a2 2 0 01-1.995-1.858L5 7
+                                                                m5 4v6
+                                                                m4-6v6
+                                                                M9 7h6
+                                                                m2 0H7
+                                                                m3-3h4a1 1 0 011 1v2H9V5a1 1 0 011-1z" />
                                                     </svg>
                                                 </button>
                                             </form>

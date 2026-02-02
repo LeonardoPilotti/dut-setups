@@ -20,14 +20,9 @@ class RegisterController extends Controller
 
     public function store(RegisterRequest $request)
     {
-        $User = User::query()->create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => $request->input('password'),
-        ]);
-        Auth::login($User);
+        $user = User::create($request->validated());
+        Auth::login($user);
 
         return redirect()->route('site.dashboard');
-        dd(User::all());
     }
 }

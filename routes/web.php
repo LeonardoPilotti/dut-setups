@@ -3,14 +3,13 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SetupController;
 use App\Http\Controllers\TrackController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\Auth\ResetPasswordController;
-use Illuminate\Support\Facades\Mail;
 
 Route::get('/', [HomeController::class, 'index'])
     ->name('site.home');
@@ -63,33 +62,24 @@ Route::middleware('auth')->group(function () {
         ->name('setup.store');
 
     // Ver setup
-    Route::get('/dashboard/{track}/setup/{setup}', [SetupController::class, 'show'])
+    Route::get('/dashboard/{track:slug}/setup/{setup}', [SetupController::class, 'show'])
         ->name('dashboard.setup.show');
 
     // Editar setup
-    Route::get('/dashboard/setup/{setup}/edit', [SetupController::class, 'edit'])
+    Route::get('/dashboard/{track:slug}/setup/{setup}/edit', [SetupController::class, 'edit'])
         ->name('setups.edit');
 
-    Route::put('/dashboard/setup/{setup}', [SetupController::class, 'update'])
+    Route::put('/dashboard/{track:slug}/setup/{setup}', [SetupController::class, 'update'])
         ->name('setups.update');
 
-    Route::delete('/dashboard/setup/{setup}', [SetupController::class, 'destroy'])
+    Route::delete('/dashboard/{track:slug}/setup/{setup}', [SetupController::class, 'destroy'])
         ->name('setups.destroy');
-
-    // Painel Admins
-    Route::middleware('admin')->group(function () {
-
-        Route::get('/admin', [AdminController::class, 'index'])
-            ->name('admin.dashboard');
-
-    });
 });
 
-Route::get('/test-mail', function () {
-    Mail::raw('Email funcionando 🎉', function ($message) {
-        $message->to('test@example.com')
-                ->subject('Teste Mailtrap');
-    });
-
-    return 'enviado';
+// Painel Admin
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+    Route::get('/users', [AdminController::class, 'users'])->name('users');
+    Route::put('/users/{user}/role', [AdminController::class, 'updateRole'])->name('users.role');
+    Route::delete('/users/{user}', [AdminController::class, 'destroyUser'])->name('users.destroy');
 });
