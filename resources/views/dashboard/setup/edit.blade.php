@@ -1,5 +1,5 @@
 <x-layout>
-    <main class="min-h-screen bg-[#0f0f1a]">
+    <main class="min-h-screen bg-[#0f0f1a] p-6">
         <div class="max-w-4xl mx-auto">
             <!-- CABEÇALHO -->
             <div class="mb-8 text-center pt-8">
@@ -7,7 +7,7 @@
                 <p class="text-gray-400">Ajuste os parâmetros para obter o melhor desempenho na pista</p>
             </div>
 
-            <form action="{{ route('setups.update', $setup->id) }}" method="POST"
+            <form action="{{ route('setups.update', ['track' => $track->slug, 'setup' => $setup->id]) }}" method="POST"
                 class="bg-gradient-to-br from-gray-900 to-gray-800 p-8 rounded-3xl space-y-10 shadow-2xl border border-gray-700">
                 @csrf
                 @method('PUT')

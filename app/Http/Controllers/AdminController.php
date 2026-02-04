@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Setup;
 use App\Models\Track;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -34,13 +34,39 @@ class AdminController extends Controller
         return view('admin.dashboard', compact('stats'));
     }
 
-    public function users()
+    public function users(Request $request)
     {
-        $users = User::withCount('setups')
-            ->orderBy('created_at', 'desc')
-            ->paginate(20);
+        $sort = $request->get('sort', 'id');
+        $direction = $request->get('direction', 'asc');
+        $search = trim((string) $request->get('search', ''));
 
-        return view('admin.users.index', compact('users'));
+        // Colunas que podem ordenar
+        $allowedSorts = ['id', 'name', 'email', 'role'];
+        if (! in_array($sort, $allowedSorts)) {
+            $sort = 'id';
+        }
+
+        // Pega todos os usuários e faz uma tabela
+        $users = User::query()
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                });
+            })
+            ->orderBy($sort, $direction)
+            ->paginate(20)
+            ->appends(request()->only('search', 'sort', 'direction'));
+
+        $sortDirections = [
+            'id' => $sort === 'id' && $direction === 'asc' ? 'desc' : 'asc',
+            'name' => $sort === 'name' && $direction === 'asc' ? 'desc' : 'asc',
+            'email' => $sort === 'email' && $direction === 'asc' ? 'desc' : 'asc',
+            'role' => $sort === 'role' && $direction === 'asc' ? 'desc' : 'asc',
+        ];
+
+        return view('admin.users.index', compact('users', 'sort', 'direction', 'sortDirections', 'search'));
+
     }
 
     public function updateRole(Request $request, User $user)

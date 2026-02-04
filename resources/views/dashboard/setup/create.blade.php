@@ -1,5 +1,5 @@
 <x-layout>
-    <main class="min-h-screen bg-[#0f0f1a]">
+    <main class="min-h-screen bg-[#0f0f1a] p-6">
         <div class="max-w-4xl mx-auto">
             <!-- CABEÇALHO -->
             <div class="mb-8 text-center pt-8">

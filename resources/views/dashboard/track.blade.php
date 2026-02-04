@@ -169,7 +169,6 @@
                                             <p class="text-sm text-gray-300">{{ $setup->user->name ?? 'Sistema' }}</p>
                                         </div>
                                     </a>
-
                                     <!-- DELETAR — Só admin -->
                                     @auth
                                         @if (auth()->user()->isAdmin())

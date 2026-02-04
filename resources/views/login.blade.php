@@ -79,5 +79,4 @@
             </div>
         </main>
     </div>
-    <x-footer />
 </x-layout>
