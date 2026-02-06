@@ -3,38 +3,38 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model; 
+use Illuminate\Database\Eloquent\Model;
 
 class Setup extends Model
 {
     use HasFactory;
 
-   protected $fillable = [
-    'title',
-    'owner_name',
-    'is_wet',
-    'is_generic',
-    'front_wing',
-    'rear_wing',
-    'diff_on',
-    'diff_off',
-    'front_camber',
-    'rear_camber',
-    'front_toe',
-    'rear_toe',
-    'front_suspension',
-    'rear_suspension',
-    'front_anti_roll',
-    'rear_anti_roll',
-    'front_height',
-    'rear_height',
-    'brake_pressure',
-    'brake_bias',
-    'front_right_pressure',
-    'front_left_pressure',
-    'rear_right_pressure',
-    'rear_left_pressure',
-];
+    protected $fillable = [
+        'title',
+        'owner_name',
+        'is_wet',
+        'is_generic',
+        'front_wing',
+        'rear_wing',
+        'diff_on',
+        'diff_off',
+        'front_camber',
+        'rear_camber',
+        'front_toe',
+        'rear_toe',
+        'front_suspension',
+        'rear_suspension',
+        'front_anti_roll',
+        'rear_anti_roll',
+        'front_height',
+        'rear_height',
+        'brake_pressure',
+        'brake_bias',
+        'front_right_pressure',
+        'front_left_pressure',
+        'rear_right_pressure',
+        'rear_left_pressure',
+    ];
 
     protected function casts(): array
     {
@@ -54,5 +54,27 @@ class Setup extends Model
     public function track()
     {
         return $this->belongsTo(Track::class);
+    }
+
+    // Relação com favoritos
+    public function favorites()
+    {
+        return $this->belongsToMany(User::class, 'favorites')->withTimestamps();
+    }
+
+    // Verifica se foi favoritado
+    public function isFavoritedBy($user)
+    {
+        if (! $user) {
+            return false;
+        }
+
+        return $this->favorites()->where('user_id', $user->id)->exists();
+    }
+
+    // Total de favoritos
+    public function favoritesCount()
+    {
+        return $this->favorites()->count();
     }
 }

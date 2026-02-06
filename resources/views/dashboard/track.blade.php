@@ -31,7 +31,7 @@
         </section>
 
         <!-- CONTEÚDO -->
-        <section class="py-8">
+        <section class="py-8"> 
             @php
                 $filter = request('filter', 'dry');
             @endphp
@@ -66,7 +66,20 @@
                                 <div
                                     class="relative bg-[#171825] rounded-xl p-6
                             hover:bg-[#21242f] transition-all shadow-lg
-                            border border-gray-800 hover:border-gray-700">
+                            border {{ $setup->isFavoritedBy(auth()->user()) ? 'border-yellow-500/50 ring-1 ring-yellow-500/30' : 'border-gray-800' }} 
+                            hover:border-gray-700">
+
+                                    <!-- BADGE FAVORITO -->
+                                    @auth
+                                        @if($setup->isFavoritedBy(auth()->user()))
+                                            <div class="absolute -top-2 -right-2 bg-yellow-500 text-gray-900 text-xs font-bold px-3 py-1 rounded-full shadow-lg flex items-center gap-1 z-20">
+                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                                                </svg>
+                                                FAVORITO
+                                            </div>
+                                        @endif
+                                    @endauth
 
                                     <!-- CARD CLICÁVEL -->
                                     <a href="{{ route('dashboard.setup.show', [$track->slug, $setup->id]) }}"
@@ -94,34 +107,58 @@
                                             <p class="text-sm text-gray-300">{{ $setup->user->name ?? 'Sistema' }}</p>
                                         </div>
                                     </a>
+                                    
 
-                                    <!-- DELETAR — Só admin -->
-                                    @auth
-                                        @if (auth()->user()->isAdmin())
-                                            <form action="{{ route('setups.destroy', [$track->slug, $setup->id]) }}" method="POST"
-                                                onsubmit="return confirm('Tem certeza que deseja excluir este setup?')"
-                                                class="absolute bottom-4 right-4 z-10">
+                                    <!-- AÇÕES (FAVORITO E DELETAR) -->
+                                    <div class="absolute bottom-4 right-4 flex gap-2 z-10">
+                                        @auth
+                                            <!-- BOTÃO FAVORITAR -->
+                                            <form action="{{ route('setups.favorite', [$track->slug, $setup->id]) }}" 
+                                                  method="POST"
+                                                  class="inline">
                                                 @csrf
-                                                @method('DELETE')
-
-                                                <button type="submit" onclick="event.stopPropagation()"
-                                                    class="text-red-400 hover:text-red-300 transition"
-                                                    title="Excluir setup">
-                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                        viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862
-                            a2 2 0 01-1.995-1.858L5 7
-                            m5 4v6
-                            m4-6v6
-                            M9 7h6
-                            m2 0H7
-                            m3-3h4a1 1 0 011 1v2H9V5a1 1 0 011-1z" />
+                                                <button type="submit" 
+                                                        onclick="event.stopPropagation()"
+                                                        class="transition hover:scale-110"
+                                                        title="{{ $setup->isFavoritedBy(auth()->user()) ? 'Remover dos favoritos' : 'Adicionar aos favoritos' }}">
+                                                    <svg class="w-6 h-6 {{ $setup->isFavoritedBy(auth()->user()) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-600 fill-gray-600' }}" 
+                                                         fill="currentColor" 
+                                                         stroke="currentColor"
+                                                         viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" 
+                                                              stroke-linejoin="round" 
+                                                              stroke-width="1" 
+                                                              d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                                                     </svg>
                                                 </button>
                                             </form>
-                                        @endif
-                                    @endauth
+
+                                            @if (auth()->user()->isAdmin())
+                                                <!-- BOTÃO DELETAR -->
+                                                <form action="{{ route('setups.destroy', [$track->slug, $setup->id]) }}" method="POST"
+                                                    onsubmit="return confirm('Tem certeza que deseja excluir este setup?')">
+                                                    @csrf
+                                                    @method('DELETE')
+
+                                                    <button type="submit" onclick="event.stopPropagation()"
+                                                        class="text-red-400 hover:text-red-300 transition"
+                                                        title="Excluir setup">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862
+                                a2 2 0 01-1.995-1.858L5 7
+                                m5 4v6
+                                m4-6v6
+                                M9 7h6
+                                m2 0H7
+                                m3-3h4a1 1 0 011 1v2H9V5a1 1 0 011-1z" />
+                                                        </svg>
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        @endauth
+                                    </div>
                                 </div>
                             @endforeach
                         </div>
@@ -141,7 +178,20 @@
                                 <div
                                     class="relative bg-[#171825] rounded-xl p-6
                                         hover:bg-[#21242f] transition-all shadow-lg
-                                        border border-gray-800 hover:border-gray-700">
+                                        border {{ $setup->isFavoritedBy(auth()->user()) ? 'border-yellow-500/50 ring-1 ring-yellow-500/30' : 'border-gray-800' }}
+                                        hover:border-gray-700">
+
+                                    <!-- BADGE FAVORITO -->
+                                    @auth
+                                        @if($setup->isFavoritedBy(auth()->user()))
+                                            <div class="absolute -top-2 -right-2 bg-yellow-500 text-gray-900 text-xs font-bold px-3 py-1 rounded-full shadow-lg flex items-center gap-1 z-20">
+                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                                                </svg>
+                                                FAVORITO
+                                            </div>
+                                        @endif
+                                    @endauth
 
                                     <!-- CARD CLICÁVEL -->
                                     <a href="{{ route('dashboard.setup.show', [$track->slug, $setup->id]) }}"
@@ -169,33 +219,57 @@
                                             <p class="text-sm text-gray-300">{{ $setup->user->name ?? 'Sistema' }}</p>
                                         </div>
                                     </a>
-                                    <!-- DELETAR — Só admin -->
-                                    @auth
-                                        @if (auth()->user()->isAdmin())
-                                            <form action="{{ route('setups.destroy', [$track->slug, $setup->id]) }}" method="POST"
-                                                onsubmit="return confirm('Tem certeza que deseja excluir este setup?')"
-                                                class="absolute bottom-4 right-4 z-10">
-                                                @csrf
-                                                @method('DELETE')
 
-                                                <button type="submit" onclick="event.stopPropagation()"
-                                                    class="text-red-400 hover:text-red-300 transition"
-                                                    title="Excluir setup">
-                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                        viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862
-                                                                a2 2 0 01-1.995-1.858L5 7
-                                                                m5 4v6
-                                                                m4-6v6
-                                                                M9 7h6
-                                                                m2 0H7
-                                                                m3-3h4a1 1 0 011 1v2H9V5a1 1 0 011-1z" />
+                                    <!-- AÇÕES (FAVORITO E DELETAR) -->
+                                    <div class="absolute bottom-4 right-4 flex gap-2 z-10">
+                                        @auth
+                                            <!-- BOTÃO FAVORITAR -->
+                                            <form action="{{ route('setups.favorite', [$track->slug, $setup->id]) }}" 
+                                                  method="POST"
+                                                  class="inline">
+                                                @csrf
+                                                <button type="submit" 
+                                                        onclick="event.stopPropagation()"
+                                                        class="transition hover:scale-110"
+                                                        title="{{ $setup->isFavoritedBy(auth()->user()) ? 'Remover dos favoritos' : 'Adicionar aos favoritos' }}">
+                                                    <svg class="w-6 h-6 {{ $setup->isFavoritedBy(auth()->user()) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-600 fill-gray-600' }}" 
+                                                         fill="currentColor" 
+                                                         stroke="currentColor"
+                                                         viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" 
+                                                              stroke-linejoin="round" 
+                                                              stroke-width="1" 
+                                                              d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                                                     </svg>
                                                 </button>
                                             </form>
-                                        @endif
-                                    @endauth
+
+                                            @if (auth()->user()->isAdmin())
+                                                <!-- BOTÃO DELETAR -->
+                                                <form action="{{ route('setups.destroy', [$track->slug, $setup->id]) }}" method="POST"
+                                                    onsubmit="return confirm('Tem certeza que deseja excluir este setup?')">
+                                                    @csrf
+                                                    @method('DELETE')
+
+                                                    <button type="submit" onclick="event.stopPropagation()"
+                                                        class="text-red-400 hover:text-red-300 transition"
+                                                        title="Excluir setup">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862
+                                                                    a2 2 0 01-1.995-1.858L5 7
+                                                                    m5 4v6
+                                                                    m4-6v6
+                                                                    M9 7h6
+                                                                    m2 0H7
+                                                                    m3-3h4a1 1 0 011 1v2H9V5a1 1 0 011-1z" />
+                                                        </svg>
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        @endauth
+                                    </div>
                                 </div>
                             @endforeach
                         </div>

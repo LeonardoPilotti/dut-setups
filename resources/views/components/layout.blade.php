@@ -6,6 +6,8 @@
     <title>{{ $title ?? 'DUT Setups' }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="preload" as="image" href="/images/fundo.png">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/dutLogo.png') }}">
+
 </head>
 
 <body class="min-h-screen bg-[#1F2233]">

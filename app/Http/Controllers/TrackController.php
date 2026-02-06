@@ -2,36 +2,44 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Setup;
 use App\Models\Track;
+use Illuminate\Http\Request;
 
 class TrackController extends Controller
 {
-    public function show(Track $track)
+    /**
+     * Exibir setups de uma pista específica
+     */
+    public function show($slug)
     {
+        $track = Track::where('slug', $slug)->firstOrFail();
+        
+        // Pegar o usuário autenticado
         $user = auth()->user();
-        $setupsQuery = $track->setups()->with('user');
-
-        if ($user->isAdmin()) {
-            // Não filtra nada (Vê tudo)
-        } elseif ($user->role === 'team') {
-            // Vê apenas setups da equipe (não genéricos)
-            $setupsQuery->where('is_generic', false);
-
-        } else {
-            // Usuário normal (Só genéricos)
-            $setupsQuery->where('is_generic', true);
-        }
-
-        $drySetups = (clone $setupsQuery)
+        
+        // SETUPS SECOS
+        $drySetups = Setup::where('track_id', $track->id)
             ->where('is_wet', false)
-            ->orderBy('id')
+            ->with(['user', 'favorites'])
+            ->latest()
             ->get();
-
-        $wetSetups = (clone $setupsQuery)
+        
+        // SETUPS MOLHADOS
+        $wetSetups = Setup::where('track_id', $track->id)
             ->where('is_wet', true)
-            ->orderBy('id')
+            ->with(['user', 'favorites'])
+            ->latest()
             ->get();
-
+        
+            $drySetups = $drySetups->sortByDesc(function($setup) use ($user) {
+                return $setup->isFavoritedBy($user);
+            })->values();
+            
+            $wetSetups = $wetSetups->sortByDesc(function($setup) use ($user) {
+                return $setup->isFavoritedBy($user);
+            })->values();
+        
         return view('dashboard.track', compact('track', 'drySetups', 'wetSetups'));
     }
 }

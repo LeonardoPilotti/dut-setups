@@ -10,6 +10,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SetupController;
 use App\Http\Controllers\TrackController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FavoriteController;
 
 Route::get('/', [HomeController::class, 'index'])
     ->name('site.home');
@@ -74,6 +75,14 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/dashboard/{track:slug}/setup/{setup}', [SetupController::class, 'destroy'])
         ->name('setups.destroy');
+
+    // Toggle favorito
+    Route::post('/tracks/{track}/setups/{setup}/favorite', [FavoriteController::class, 'toggle'])
+        ->name('setups.favorite');
+    
+    // Listar favoritos do usuário
+    Route::get('/my-favorites', [FavoriteController::class, 'index'])
+        ->name('favorites.index');
 });
 
 // Painel Admin
