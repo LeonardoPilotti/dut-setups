@@ -3,7 +3,7 @@
 
         <!-- Logo -->
         <a href="{{ auth()->check() ? route('site.dashboard') : route('site.home') }}" class="flex items-center">
-            <img src="{{ asset('images/dutLogo.png') }}" alt="DUT Racing" class="h-22 w-22 rounded-lg" />
+            <img src="{{ asset('images/dutLogo.png') }}" alt="DUT Racing" class="h-26 w-26 rounded-lg" />
         </a>
 
         <div class="flex items-center gap-4 text-white">
