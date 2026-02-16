@@ -36,20 +36,23 @@
 
             @if ($errors->any())
                 <div class="mb-6 p-4 bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl backdrop-blur-sm">
-                    <div class="flex items-center gap-3 mb-2">
+                    <div class="flex items-center gap-3">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        <span class="font-medium">Ocorreram erros:</span>
-                    </div>
-                    <ul class="space-y-1 ml-8 list-disc text-sm">
+                    
+                    <ul>
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
                     </ul>
+                    </div>
                 </div>
             @endif
+
+
+
 
             <!-- Users Table -->
             <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 overflow-hidden">
@@ -108,7 +111,7 @@
                                 </th>
 
                                 <th class="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase">
-                                    <a href="{{ route('admin.users', ['sort' => 'email', 'direction' => $sortDirections['email'], 'search' =>request('search')]) }}"
+                                    <a href="{{ route('admin.users', ['sort' => 'email', 'direction' => $sortDirections['email'], 'search' => request('search')]) }}"
                                         class="flex items-center gap-2 hover:text-gray-300 transition-colors group">
                                         E-mail
                                         <svg class="w-4 h-4 text-gray-500 group-hover:text-gray-300 transition-colors"

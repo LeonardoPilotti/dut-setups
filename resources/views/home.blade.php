@@ -10,6 +10,7 @@
 
                 <p class="text-xl text-gray-300 max-w-3xl mx-auto mb-10">
                     Sua fonte número um para setups profissionais de F1 25.
+                    <br>
                     <span class="text-red-400 font-semibold">Melhore seus tempos</span> e domine cada pista.
                 </p>
 
