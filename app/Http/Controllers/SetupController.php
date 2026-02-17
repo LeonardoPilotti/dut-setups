@@ -12,7 +12,7 @@ class SetupController extends Controller
     {
         $this->authorize('create', Setup::class);
 
-        return view('dashboard.setup.create', compact('track'));
+        return view('dashboard.setup.form', compact('track'));
     }
 
     public function show(Track $track, Setup $setup)
@@ -41,7 +41,7 @@ class SetupController extends Controller
     {
         $this->authorize('update', $setup);
 
-        return view('dashboard.setup.edit', compact('setup', 'track'));
+        return view('dashboard.setup.form', compact('setup', 'track'));
     }
 
     public function update(SetupRequest $request, Track $track, Setup $setup)

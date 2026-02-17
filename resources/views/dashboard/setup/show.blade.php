@@ -2,17 +2,18 @@
     <main class="min-h-screen bg-gradient-to-b from-gray-900 to-[#0f0f1a]">
         <div class="max-w-5xl mx-auto px-4 py-8">
             <!-- Cabeçalho -->
-            <div
-                class="bg-gradient-to-r from-gray-800 to-gray-900 rounded-2xl border border-gray-700 p-6 mb-8 shadow-xl">
+            <div class="bg-gradient-to-r from-gray-800 to-gray-900 rounded-2xl border border-gray-700 p-6 mb-8 shadow-xl">
                 <div class="flex flex-col md:flex-row items-center justify-between">
                     <div>
-                        <div class="flex items-center gap-2 text-gray-400 text-sm mb-2">
+                           @if ($setup->owner_name)
+                <div class="flex items-center gap-2 text-gray-400 text-sm mb-2">
                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
                                     clip-rule="evenodd"></path>
                             </svg>
                             <span>Criado por: {{ $setup->owner_name }}</span>
                         </div>
+            @endif
                         <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">{{ $setup->title }}</h1>
                         <div class="flex items-center gap-2 text-blue-400">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -251,6 +252,7 @@
                             </svg>
                             <span>Criado em: {{ $setup->created_at->format('d/m/Y') }}</span>
                         </div>
+                        
                         @if ($setup->updated_at != $setup->created_at)
                             <div class="flex items-center gap-2 text-gray-400">
                                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">

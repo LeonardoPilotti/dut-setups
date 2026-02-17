@@ -1,94 +1,115 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TrackController;
+use App\Http\Controllers\SetupController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\AdminController;
+
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\SetupController;
-use App\Http\Controllers\TrackController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\FavoriteController;
+
 
 Route::get('/', [HomeController::class, 'index'])
     ->name('site.home');
 
+
 // Auth
-Route::get('/login', [LoginController::class, 'index'])
-    ->name('login');
 
-Route::post('/login', [LoginController::class, 'authenticate'])
-    ->name('auth.login');
+Route::controller(LoginController::class)->group(function () {
+    Route::get('/login', 'index')->name('login');
+    Route::post('/login', 'authenticate')->name('auth.login');
+    Route::post('/logout', 'logout')->name('auth.logout');
+});
 
-Route::get('/cadastro', [RegisterController::class, 'index'])
-    ->name('site.register');
+Route::controller(RegisterController::class)->group(function () {
+    Route::get('/cadastro', 'index')->name('site.register');
+    Route::post('/cadastro', 'store')->name('auth.register');
+});
 
-Route::post('/cadastro', [RegisterController::class, 'store'])
-    ->name('auth.register');
+Route::controller(ForgotPasswordController::class)->group(function () {
+    Route::get('/forgot-password', 'showLinkRequestForm')->name('password.request');
+    Route::post('/forgot-password', 'sendResetLinkEmail')->name('password.email');
+});
 
-Route::post('/logout', [LoginController::class, 'logout'])
-    ->name('auth.logout');
+Route::controller(ResetPasswordController::class)->group(function () {
+    Route::get('/reset-password/{token}', 'showResetForm')->name('password.reset');
+    Route::post('/reset-password', 'reset')->name('password.update');
+});
 
-// Redefinir senha
-Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])
-    ->name('password.request');
 
-Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])
-    ->name('password.email');
+// Dashboard
 
-Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])
-    ->name('password.reset');
-
-Route::post('/reset-password', [ResetPasswordController::class, 'reset'])
-    ->name('password.update');
-
-// Dashboard (somente usuários logados)
 Route::middleware('auth')->group(function () {
 
     // Dashboard principal
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('site.dashboard');
 
-    // Ver pista + setups
+
+// Pista
+
     Route::get('/dashboard/{track:slug}', [TrackController::class, 'show'])
         ->name('dashboard.track');
 
-    // Criar setup
-    Route::get('/dashboard/{track:slug}/setup/create', [SetupController::class, 'create'])
-        ->name('setup.create');
 
-    Route::post('/dashboard/{track:slug}/setup', [SetupController::class, 'store'])
-        ->name('setup.store');
+// Setups
 
-    // Ver setup
-    Route::get('/dashboard/{track:slug}/setup/{setup}', [SetupController::class, 'show'])
-        ->name('dashboard.setup.show');
+    Route::prefix('/dashboard/{track:slug}/setup')
+        ->group(function () {
 
-    // Editar setup
-    Route::get('/dashboard/{track:slug}/setup/{setup}/edit', [SetupController::class, 'edit'])
-        ->name('setups.edit');
+            // Criar
+            Route::get('/create', [SetupController::class, 'create'])
+                ->name('setup.create');
 
-    Route::put('/dashboard/{track:slug}/setup/{setup}', [SetupController::class, 'update'])
-        ->name('setups.update');
+            Route::post('/', [SetupController::class, 'store'])
+                ->name('setup.store');
 
-    Route::delete('/dashboard/{track:slug}/setup/{setup}', [SetupController::class, 'destroy'])
-        ->name('setups.destroy');
+            // Ver
+            Route::get('/{setup}', [SetupController::class, 'show'])
+                ->name('dashboard.setup.show');
 
-    // Toggle favorito
-    Route::post('/tracks/{track}/setups/{setup}/favorite', [FavoriteController::class, 'toggle'])
-        ->name('setups.favorite');
-    
-    // Listar favoritos do usuário
-    Route::get('/my-favorites', [FavoriteController::class, 'index'])
-        ->name('favorites.index');
+            // Editar
+            Route::get('/{setup}/edit', [SetupController::class, 'edit'])
+                ->name('setups.edit');
+
+            Route::put('/{setup}', [SetupController::class, 'update'])
+                ->name('setups.update');
+
+            Route::delete('/{setup}', [SetupController::class, 'destroy'])
+                ->name('setups.destroy');
+        });
+
+
+// Favoritos
+
+    Route::post('/tracks/{track}/setups/{setup}/favorite',
+        [FavoriteController::class, 'toggle']
+    )->name('setups.favorite');
 });
 
-// Painel Admin
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', [AdminController::class, 'index'])->name('dashboard');
-    Route::get('/users', [AdminController::class, 'users'])->name('users');
-    Route::put('/users/{user}/role', [AdminController::class, 'updateRole'])->name('users.role');
-    Route::delete('/users/{user}', [AdminController::class, 'destroyUser'])->name('users.destroy');
-});
+
+// Admin
+
+Route::middleware(['auth', 'admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+
+        Route::get('/', [AdminController::class, 'index'])
+            ->name('dashboard');
+
+        Route::get('/users', [AdminController::class, 'users'])
+            ->name('users');
+
+        Route::put('/users/{user}/role', [AdminController::class, 'updateRole'])
+            ->name('users.role');
+
+        Route::delete('/users/{user}', [AdminController::class, 'destroyUser'])
+            ->name('users.destroy');
+    });

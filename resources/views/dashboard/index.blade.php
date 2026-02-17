@@ -29,7 +29,7 @@
                 </h2>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                 @forelse ($tracks as $track)
                     <a href="{{ route('dashboard.track', $track->slug) }}"
                         class="group relative overflow-hidden bg-gray-900 rounded-2xl p-6 transition-all duration-300 border border-gray-700 hover:border-red-500">
