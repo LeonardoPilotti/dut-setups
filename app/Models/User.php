@@ -30,6 +30,11 @@ class User extends Authenticatable implements CanResetPasswordContract
         return $this->role === 'team';
     }
 
+    public function isUser(): bool
+    {
+        return $this->role ==='user';
+    }
+
     public function isAdmin(): bool
     {
         return $this->role === 'admin';

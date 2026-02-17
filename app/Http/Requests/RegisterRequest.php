@@ -39,7 +39,7 @@ class RegisterRequest extends FormRequest
             'email.unique'=>'O e-mail já está em uso.',
 
             'password.required'=>'O campo senha é obrigatório.',
-            'password.min'=>'A senha deve ter no mínimo 6 caracteres.',
+            'password.min'=>'A senha deve ter no mínimo 8 caracteres.',
             'password.max'=>'A senha pode ter no máximo 60 caracteres.',
             'password.confirmed'=>'As senhas não coincidem.',
         ];}

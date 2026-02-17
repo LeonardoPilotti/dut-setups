@@ -35,7 +35,7 @@
                                 Voltar para Pista
                             </a>
 
-                            @if (auth()->user()->isAdmin() || auth()->user()->role === 'team')
+                            @if (auth()->user()->isAdmin())
                                 <a href="{{ route('setups.edit', [$track->slug, $setup->id]) }}"
                                     class="flex items-center gap-2 p-3 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition">
 
